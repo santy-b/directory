@@ -1,0 +1,15 @@
+$properties = @(
+    'DisplayName'
+    'GivenName'
+    'Surname'
+    'Title'
+    'Department'
+    'Office'
+    'OfficePhone'
+    'UserPrincipalName'	
+)
+$ouToExclude = 'OU=Disabled Accounts'
+Get-ADUser -Filter "Department -like '*'" -Properties $properties |
+Where-Object { $_.DistinguishedName -notlike "*$ouToExclude*" } | 
+Select-Object $properties |  
+Export-Csv "C:\ad-users.csv"
